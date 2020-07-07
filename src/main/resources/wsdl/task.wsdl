@@ -1,0 +1,75 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://company.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://company.com" targetNamespace="http://company.com">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://company.com">
+            <xs:element name="GetTasksByIdRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="personId" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetTasksByIdResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="task" type="tns:taskSoap"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="taskSoap">
+                <xs:sequence>
+                    <xs:element name="id">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:long">
+                                <xs:pattern value="[0-9]+"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="title" type="xs:string"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="priority" type="xs:int"/>
+                    <xs:element name="priorityName" type="xs:string"/>
+                    <xs:element name="classTable" type="xs:string"/>
+                    <xs:element name="person" type="tns:personSoap"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="personSoap">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:long"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="age" type="xs:int"/>
+                    <xs:element name="salary" type="xs:double"/>
+                    <xs:element name="dob" type="xs:date"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="GetTasksByIdResponse">
+        <wsdl:part element="tns:GetTasksByIdResponse" name="GetTasksByIdResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetTasksByIdRequest">
+        <wsdl:part element="tns:GetTasksByIdRequest" name="GetTasksByIdRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="TasksList">
+        <wsdl:operation name="GetTasksById">
+            <wsdl:input message="tns:GetTasksByIdRequest" name="GetTasksByIdRequest"> </wsdl:input>
+            <wsdl:output message="tns:GetTasksByIdResponse" name="GetTasksByIdResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="TasksListSoap11" type="tns:TasksList">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetTasksById">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="GetTasksByIdRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="GetTasksByIdResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="TasksListService">
+        <wsdl:port binding="tns:TasksListSoap11" name="TasksListSoap11">
+            <soap:address location="http://localhost:1998/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

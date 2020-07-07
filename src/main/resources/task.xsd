@@ -1,0 +1,47 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://company.com"
+           targetNamespace="http://company.com" elementFormDefault="qualified">
+
+    <xs:element name="GetTasksByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="personId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetTasksByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="task" type="tns:taskSoap" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="taskSoap">
+        <xs:sequence>
+            <xs:element name="id">
+                <xs:simpleType>
+                    <xs:restriction base="xs:long">
+                        <xs:pattern value="[0-9]+"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="priority" type="xs:int"/>
+            <xs:element name="priorityName" type="xs:string" />
+            <xs:element name="classTable" type="xs:string" />
+            <xs:element name="person" type="tns:personSoap"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="personSoap">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="age" type="xs:int"/>
+            <xs:element name="salary" type="xs:double"/>
+            <xs:element name="dob" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
